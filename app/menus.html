@@ -69,10 +69,10 @@
           <div class="mb-3">
             <label for="allergenes" class="form-label">Allergènes</label>
             <select class="form-select" id="allergenes">
-              <option value="">Tous</option>
-              <option value="gluten">Gluten</option>
-              <option value="lactose">Lactose</option>
-              <option value="poisson">Poisson</option>
+              <option value="">Aucun</option>
+              <option value="gluten">Sans gluten</option>
+              <option value="lactose">Sans lactose</option>
+              <option value="poisson">Sans poisson</option>
             </select>
           </div>
 
@@ -162,7 +162,7 @@
             <div class="card-body">
               <h5 class="card-title">${menu.nom}</h5>
               <p class="card-text">
-                Régime : ${menu.regime || "Standard"} | 
+                Régime : ${menu.regime || "standard"} | 
                 Prix : ${menu.prix}€ | 
                 Pers. min : ${menu.nbrPersonnesMin}
               </p>
@@ -187,7 +187,7 @@
       const prixMax = parseInt(document.getElementById("prixMax").value) || Infinity;
 
       const filtered = menus.filter(menu => {
-        const matchAllergene = allergene === "" || menu.allergenes.includes(allergene);
+        const matchAllergene = allergene === "" || !menu.allergenes.includes(allergene);
         const matchRegime = regime === "" || menu.regime === regime;
         const matchNbr = menu.nbrPersonnesMin >= nbrPersonnes;
         const matchPrix = menu.prix >= prixMin && menu.prix <= prixMax;
