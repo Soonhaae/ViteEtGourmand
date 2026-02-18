@@ -1,0 +1,12 @@
+# Variables d'environnement
+**/.env
+
+# Dépendances Composer
+vendor
+
+# Logs
+**/*.log
+
+# Fichiers système
+**/.DS_Store
+**/Thumbs.db

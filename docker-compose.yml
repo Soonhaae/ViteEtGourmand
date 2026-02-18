@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Service PHP avec Apache
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-web
+    ports:
+      - "8080:80"
+    volumes:
+      # Monte le code source dans le container
+      - ./app:/var/www/html
+      # Pour la config PHP personnalisée (optionnel)
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      - JAWSDB_URL=${JAWSDB_URL}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - APP_ENV=development
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Service MySQL
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      JAWSDB_URL: ${JAWSDB_URL}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      # Persiste les données MySQL
+      - mysql-data:/var/lib/mysql
+      # Pour initialiser la base avec un script SQL (optionnel)
+      # Path format: ./init.sql (host) -> /docker-entrypoint-initdb.d/init.sql (container)
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./create_db.sql:/docker-entrypoint-initdb.d/init.sql 
+    networks:
+      - app-network
+    restart: unless-stopped
+
+# Réseau pour la communication entre containers
+networks:
+  app-network:
+    driver: bridge
+
+# Volume pour persister les données MySQL
+volumes:
+  mysql-data:
