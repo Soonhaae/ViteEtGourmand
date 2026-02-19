@@ -15,8 +15,7 @@ services:
       # Pour la config PHP personnalisée (optionnel)
       - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
     environment:
-      - JAWSDB_URL=${JAWSDB_URL}
-      - DB_HOST=db
+      - DB_HOST=${DB_HOST}
       - DB_PORT=3306
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
@@ -35,8 +34,6 @@ services:
     ports:
       - "3306:3306"
     environment:
-      JAWSDB_URL: ${JAWSDB_URL}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
